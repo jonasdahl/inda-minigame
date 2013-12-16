@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.params=printString
+comment0.target=void\ println(java.lang.String)
+comment0.text=\n\ Prints\ the\ information\ to\ the\ terminal,\ using\ System.out.println()\ atm.\n
+comment1.params=
+comment1.target=void\ println()
+comment1.text=\n\ Prints\ the\ information\ to\ the\ terminal,\ using\ System.out.println()\ atm.\n
+comment2.params=printString
+comment2.target=void\ print(java.lang.String)
+comment2.text=\n\ Prints\ the\ information\ to\ the\ terminal,\ using\ System.out.print()\ atm.\n
+numComments=3

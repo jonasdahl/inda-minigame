@@ -1,0 +1,11 @@
+#BlueJ class context
+comment0.params=name
+comment0.target=Beamer(java.lang.String)
+comment0.text=\n\ Constructor\ for\ objects\ of\ class\ Beamer\n\ @param\ name\ the\ name\ of\ the\ beamer\n
+comment1.params=toRoom
+comment1.target=void\ charge(Room)
+comment1.text=\n\ Charges\ the\ beamer\ with\ given\ room.\n\ @param\ toRoom\ room\ to\ charge\ with\n
+comment2.params=
+comment2.target=Room\ getDestination()
+comment2.text=\n\ Gets\ the\ destination\ of\ this\ beamer.\n\ @return\ the\ destination\ room\n
+numComments=3
