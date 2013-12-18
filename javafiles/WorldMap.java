@@ -16,6 +16,6 @@ public class WorldMap extends Item {
     public WorldMap(String name) {
         super(name);
         setColor(MAP_COLOR);
-        setUseWord("map *NameOfMap*");
+        setUseWord("map");
     }
 }

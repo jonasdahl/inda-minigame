@@ -8,6 +8,7 @@ import java.awt.Color;
  */
 public class Key extends Item {
     private static final Color KEY_COLOR = new Color(255, 215, 0);
+    
     /**
      * Constructor for objects of class Key
      * @param name the name of the Key.

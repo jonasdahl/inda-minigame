@@ -34,7 +34,7 @@ public class CommandWords {
      *         if it is not a valid command word.
      */
     public CommandWord getCommandWord(String commandWord) {
-        CommandWord command = validCommands.get(commandWord);
+        CommandWord command = validCommands.get(commandWord.toLowerCase());
         if (command != null) {
             return command;
         } else {

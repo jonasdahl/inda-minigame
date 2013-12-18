@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.*;
 
 /**
  * Handles items in the game.
@@ -87,5 +88,38 @@ public class Item {
     
     public void setUseWord(String useWord) {
         this.useWord = useWord;
+    }
+    
+    /**
+     * Finds Item in given HashSet of Item:s with given name.
+     * @return null if no item with given name was found, otherwise the item is returned
+     */
+    public static Item getItem(String name, HashSet<Item> items) {
+        for (Item item : items) {
+            if (item.getName().equalsIgnoreCase(name)) {
+                return item;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Finds "first" Item in given HashSet of Item:s with given type.
+     * @return null if no item with given type was found, otherwise the item is returned
+     */
+    public static Item getItem(Class type, HashSet<Item> items) {
+        for (Item item : items) {
+            if (type.isInstance(item)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets description of item.
+     */
+    public String getDescription() {
+        return "There is a " + name + " in here. Pick it up by typing 'pick " + name + "'";
     }
 }

@@ -12,7 +12,7 @@ import java.util.*;
  */
 
 public class Canvas {
-    private int roomWidth, roomHeight, roomMargin, roomPadding, delay;
+    private int roomWidth, roomHeight, roomMargin, roomPadding;
     private JFrame frame;
     private CanvasPane canvas;
     private Graphics2D graphic;
@@ -26,7 +26,7 @@ public class Canvas {
      * @param height  the desired height for the canvas
      */
     public Canvas(String title, int width, int height, int roomWidth, 
-                  int roomHeight, int roomMargin, int roomPadding, int delay) {
+                  int roomHeight, int roomMargin, int roomPadding) {
         frame = new JFrame();
         canvas = new CanvasPane();
         frame.setContentPane(canvas);
@@ -39,7 +39,6 @@ public class Canvas {
         this.roomHeight = roomHeight;
         this.roomPadding = roomPadding;
         this.roomMargin = roomMargin;
-        this.delay = delay;
     }
 
     /**
@@ -346,16 +345,16 @@ public class Canvas {
         Set<String> keys = exits.keySet();
         for (String direction : keys) {
             int y = 0, x = 0;
-            if (direction.equals("west")) {
+            if (direction.equalsIgnoreCase("west")) {
                 x = xpos - roomMargin;
                 y = ypos + (roomHeight - roomMargin) / 2;
-            } else if (direction.equals("north")) {
+            } else if (direction.equalsIgnoreCase("north")) {
                 x = xpos + (roomWidth - roomMargin) / 2;
                 y = ypos - roomMargin;
-            } else if (direction.equals("east")) {
+            } else if (direction.equalsIgnoreCase("east")) {
                 x = xpos + roomWidth;
                 y = ypos + (roomHeight - roomMargin) / 2;
-            } else if (direction.equals("south")) {
+            } else if (direction.equalsIgnoreCase("south")) {
                 x = xpos + (roomWidth - roomMargin) / 2;
                 y = ypos + roomHeight;
             }
@@ -382,16 +381,41 @@ public class Canvas {
             if (roomsDrawn.contains(room))
                 continue;
             
-            if (direction.equals("north"))
+            if (direction.equalsIgnoreCase("north"))
                 y -= roomHeight + roomMargin;
-            else if (direction.equals("west"))
+            else if (direction.equalsIgnoreCase("west"))
                 x -= roomWidth + roomMargin;
-            else if (direction.equals("south"))
+            else if (direction.equalsIgnoreCase("south"))
                 y += roomHeight + roomMargin;
-            else if (direction.equals("east"))
+            else if (direction.equalsIgnoreCase("east"))
                 x += roomWidth + roomMargin;
             
             drawAllMap(room, roomsDrawn);
+        }
+    }
+    
+    public void drawItems(Room room) {
+        drawRoom(room, true); // Erase earlier items from screen
+        HashSet<Item> items = room.getItems(); // Try to look in current room.
+        int x = room.getXPos() + Game.ROOM_PADDING;
+        int y = room.getYPos() + Game.ROOM_PADDING;
+
+        if (items == null || items.isEmpty()) {
+            Output.println("There are no items in this room!");
+            return;
+        }
+        
+        for (Item item : items) {
+            Output.println(item.getDescription());
+
+            item.draw(this, x, y, Game.OBJECT_WIDTH);
+            x += Game.OBJECT_WIDTH + Game.ROOM_PADDING;
+
+            // Wrap the line of items if not space enough
+            if (x > room.getXPos() + Game.ROOM_WIDTH - Game.ROOM_PADDING - Game.OBJECT_WIDTH) {
+                x = room.getXPos() + Game.ROOM_PADDING;
+                y += Game.ROOM_PADDING + Game.OBJECT_WIDTH;
+            }
         }
     }
 }

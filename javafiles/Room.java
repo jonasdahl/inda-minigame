@@ -194,4 +194,48 @@ public class Room
     public String toString() {
         return "Room: " + description + ", (" + xPos + ", " + yPos + ")";
     }
+
+    /**
+     * Updates all rooms with their positions relative to a given room with coordinates given.
+     */
+    public static void calculateRoomCoordinates(Room startRoom) {
+        startRoom.setCoordinates((Game.WIDTH - Game.ROOM_WIDTH) / 2, 
+            (Game.HEIGHT - Game.ROOM_HEIGHT) / 2);
+        calculateRoomCoordinates(startRoom, new ArrayList<Room>());
+    }
+
+    /**
+     * Private help method for calculating room coordinates.
+     */
+    private static void calculateRoomCoordinates(Room actualRoom, ArrayList<Room> roomsTested) {
+        if (roomsTested.contains(actualRoom))
+            return;
+
+        roomsTested.add(actualRoom);
+        HashMap<String, Room> roomsNearby = actualRoom.getExits();
+
+        for (Map.Entry<String, Room> entry : roomsNearby.entrySet()) {
+            String direction = entry.getKey();
+            Room room = entry.getValue();
+            int x = actualRoom.getXPos();
+            int y = actualRoom.getYPos();
+
+            if (roomsTested.contains(room))
+                continue;
+
+            if (direction.equals("north"))
+                y -= Game.ROOM_HEIGHT + Game.ROOM_MARGIN;
+            else if (direction.equals("west"))
+                x -= Game.ROOM_WIDTH + Game.ROOM_MARGIN;
+            else if (direction.equals("south"))
+                y += Game.ROOM_HEIGHT + Game.ROOM_MARGIN;
+            else if (direction.equals("east"))
+                x += Game.ROOM_WIDTH + Game.ROOM_MARGIN;
+
+            room.setCoordinates(x, y);
+            calculateRoomCoordinates(room, roomsTested);        // Starts to calculate the rooms nearby
+        }
+
+        return;
+    }
 }

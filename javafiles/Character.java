@@ -25,6 +25,7 @@ public class Character extends Item {
         replies = new HashMap<HashSet<String>, String>();
         itemReplies = new HashMap<Item, String>();
         setPickable(false);
+        setUseWord("'talk " + super.getName() + "'");
     }
 
     /**
@@ -67,7 +68,7 @@ public class Character extends Item {
      * @return true if player has mentioned the winning word - the game should be finished
      */
     public boolean startConversation() {
-        String name = ((Item) this).getName();
+        String name = getName();
         Output.println("You are now talking to " + name + ". Exit by typing 'bye'.");
         Output.println("<< " + name + ": Hello");
         Output.print(">> ");
@@ -80,13 +81,10 @@ public class Character extends Item {
 
             Scanner tokenizer = new Scanner(inputLine);
             ArrayList<String> line = new ArrayList<String>();
-            for (;;) {
-                if (tokenizer.hasNext()) {
-                    line.add(tokenizer.next().trim());
-                } else {
-                    break;
-                }
+            while (tokenizer.hasNext()) {
+                line.add(tokenizer.next().trim());
             }
+            
             if (winningWord != null && line.contains(winningWord)) {
                 return true;
             } else {
@@ -155,10 +153,16 @@ public class Character extends Item {
         return null;
     }
     
+    /**
+     * Adds a reply for given item.
+     */
     public void ifGivenSay(Item item, String answer) {
         itemReplies.put(item, answer);
     }
     
+    /**
+     * Returns the reply from character if item was given.
+     */
     public String isGiven(Item item) {
         ArrayList<Item> items = new ArrayList<Item>(itemReplies.keySet());
         ArrayList<String> values = new ArrayList<String>(itemReplies.values());
@@ -169,6 +173,13 @@ public class Character extends Item {
                 return values.get(i);
             i++;
         }
-        return null;
+        return "Thank you, but what am I going to do with a " + item.getName() + "?";
+    }
+
+    /**
+     * Gets description of this Character.
+     */
+    public String getDescription() {
+        return this.getName() + " is in here! Talk to him by typing 'talk " + this.getName() + "'";
     }
 }

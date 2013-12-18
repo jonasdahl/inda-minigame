@@ -17,7 +17,7 @@ public class Beamer extends Item {
     public Beamer(String name) {
         super(name);
         setColor(BEAMER_COLOR);
-        setUseWord("charge *NameOfBeamer* | fire *NameOfBeamer*");
+        setUseWord("'charge " + super.getName() + "' or 'fire " + super.getName() + "'");
     }
     
     /**

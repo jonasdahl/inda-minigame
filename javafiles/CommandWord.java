@@ -6,7 +6,7 @@
  * @version 2013.12.06
  */
 public enum CommandWord {
-    /*
+    /**
      * A value for each command word along with its
      * corresponding user interface string. The user interface
      * string is also the name of the method beeing called
