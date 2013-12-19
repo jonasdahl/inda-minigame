@@ -97,7 +97,7 @@ public class Game {
      * Create all the rooms, items and characters and link them together.
      */
     private void setUpGame() {
-        Room entrance, pub, office;
+        Room entrance, pub, office, club;
         Character johan, nedo;
         Beamer beamer;
         Animal seal;
@@ -114,6 +114,7 @@ public class Game {
         // Create rooms
         entrance = new Room("Entrance");
         pub = new Room("Pub");
+        club = new Room("Club");
         office = new Room("Office", officeKey);
 
         // Create characters
@@ -125,8 +126,10 @@ public class Game {
         // Sets exits for the rooms
         entrance.setExit("west", pub);
         entrance.setExit("south", office);
+        entrance.setExit("north", club);
         pub.setExit("east", entrance);
         office.setExit("north", entrance);
+        club.setExit("south", entrance);
 
         // Configure characters and other items
         nedoWords.add("help");
@@ -148,7 +151,7 @@ public class Game {
         pub.addItem(nedo);
         pub.addItem(beamer);
         pub.addItem(officeKey);
-        office.addItem(map);
+        entrance.addItem(map);
         office.addItem(seal);
 
         // Set up
@@ -170,6 +173,21 @@ public class Game {
                 try {
                     Method method = getClass().getMethod(commandWord.toString(), Command.class);
                     method.invoke(this, command);
+
+                    // Update inventory graphics
+                    int x = ROOM_PADDING;
+                    int y = ROOM_PADDING;
+
+                    for (Item item : items) {
+                        item.draw(canvas, x, y, OBJECT_WIDTH);
+                        x += OBJECT_WIDTH + ROOM_PADDING;
+
+                        // Wrap the line of items if not space enough
+                        if (x > WIDTH - ROOM_PADDING - OBJECT_WIDTH) {
+                            x = ROOM_PADDING;
+                            y += ROOM_PADDING + OBJECT_WIDTH;
+                        }
+                    }
                 } catch (Exception e) {
                     Output.println("I don't know what you mean...");
                 }
@@ -315,6 +333,12 @@ public class Game {
             return;
         }
 
+        HashSet<Item> items = currentRoom.getItems(); // Try to look in current room.
+
+        for (Item item : items) {
+            Output.println(item.getDescription());
+        }
+
         canvas.drawItems(currentRoom);
     }
 
@@ -336,6 +360,8 @@ public class Game {
             roomItems.remove(item);                         // Removes item from room
             Output.println("Picked up " + item.getName() + "!");
 
+            canvas.drawItems(currentRoom);
+
             String useWord = item.getUseWord();
             if (useWord != null)
                 System.out.println("Use it by typing " + useWord + ".");
@@ -355,14 +381,14 @@ public class Game {
             Output.println("Talk who?");
         } else {
             String name = command.getSecondCommands().get(0);
-            Item person = Item.getItem(name, items);
+            Item person = Item.getItem(name, currentRoom.getItems());
             if (person == null) {
                 Output.println("There is no person called " + name + " in this room.");
                 return;
             }
             won = ((Character) person).startConversation();
         }
-        
+
         if (won)
             won();
     }

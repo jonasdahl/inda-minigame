@@ -85,12 +85,14 @@ public class Character extends Item {
                 line.add(tokenizer.next().trim());
             }
             
-            if (winningWord != null && line.contains(winningWord)) {
-                return true;
-            } else {
-                Output.println("<< " + name + ": " + getReply(line));
-                Output.print(">> ");
+            if (winningWord != null) {
+                for (String word : line) {
+                    if (word.equalsIgnoreCase(winningWord))
+                        return true;
+                }
             }
+            Output.println("<< " + name + ": " + getReply(line));
+            Output.print(">> ");
         }
         Output.println("<< Thank you for talking to me!");
         return false;

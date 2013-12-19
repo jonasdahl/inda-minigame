@@ -406,8 +406,6 @@ public class Canvas {
         }
         
         for (Item item : items) {
-            Output.println(item.getDescription());
-
             item.draw(this, x, y, Game.OBJECT_WIDTH);
             x += Game.OBJECT_WIDTH + Game.ROOM_PADDING;
 
